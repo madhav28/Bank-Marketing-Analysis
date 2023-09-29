@@ -3,7 +3,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-bank_marketing_df = pd.read_csv("bank-full.csv", sep=';')
+bank_marketing_df = pd.read_csv("https://raw.githubusercontent.com/madhav28/Bank-Marketing-Analysis/main/bank-full.csv", sep=';')
 
 st.title("Bank Marketing Dataset Analysis")
 
