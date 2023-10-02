@@ -28,9 +28,7 @@ st.markdown("### Correlation Heatmap")
 col1, col2 = st.columns([1, 3])
 
 with col2:
-    numeric_columns = bank_marketing_df.select_dtypes(include=[np.number]).columns
-    correlation_df = bank_marketing_df[numeric_columns].corr()
-    fig = sns.heatmap(correlation_df, cmap='coolwarm').figure
+    fig = sns.heatmap(bank_marketing_df.corr(numeric_only=True), cmap='coolwarm').figure
     st.pyplot(fig)
     plt.close()
 
