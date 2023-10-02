@@ -21,6 +21,11 @@ feature_description['Description'] = customer_description_df['Description']
 
 feature_description_df = pd.DataFrame(feature_description)
 
+idx = np.linspace(1, 17, 17)
+idx = idx.astype(int)
+
+feature_description_df.index = idx
+
 st.table(feature_description_df)
 
 st.markdown("### Histogram Plot Analysis")
