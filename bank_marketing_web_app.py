@@ -8,7 +8,7 @@ import altair as alt
 st.title("Bank Marketing Dataset Analysis")
 
 tab1, tab2, tab3 = st.tabs(
-    ['About Data', 'Data Visualisation', 'Predictive Modelling'])
+    ['About Data', 'Data Visualisation / Analysis', 'Predictive Modelling'])
 
 bank_marketing_df = pd.read_csv(
     "https://raw.githubusercontent.com/madhav28/Bank-Marketing-Analysis/main/bank-full.csv", sep=';')
