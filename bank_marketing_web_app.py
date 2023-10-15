@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
+import altair as alt
 
 st.title("Bank Marketing Dataset Analysis")
 
@@ -15,9 +16,12 @@ bank_marketing_df = pd.read_csv(
 with tab1:
 
     st.markdown("The data is related with direct marketing campaigns (phone calls) of a Portuguese banking institution. \
-                 The classification goal is to predict if the client will subscribe a term deposit (variable y).")
+                 The classification goal is to predict if the client will subscribe a term deposit (variable y). \
+                 In this app, the following two questions are answered: What kind of customers are likely to subscribe \
+                 to a term deposit and What are marketing strategies are to be employed by the bank for a successful campaign. \
+                 The description of the data used in the application can be found below:")
 
-    st.markdown("**Feature Description:**")
+    st.markdown("**Data Description:**")
 
     customer_description_df = pd.read_csv(
         "column_description.txt", names=['Type', 'Description'])
@@ -40,29 +44,52 @@ with tab1:
     st.table(feature_description_df)
 
 with tab2:
-    st.markdown("#### Histogram Plot Analysis")
 
-    col1, col2 = st.columns([1, 3])
+    tab4, tab5 = st.tabs(['Target Customers', 'Marketing Strategies'])
 
-    with col1:
-        column_options = bank_marketing_df.columns
-        column_name = st.selectbox("", column_options)
+    with tab4:
 
-    with col2:
-        fig = sns.histplot(data=bank_marketing_df,
-                           x=column_name, hue='y').figure
-        st.pyplot(fig)
-        plt.close()
+        st.markdown("#### Understanding what kind of customers are likely \
+                 to subscribe to a term deposit:")
 
-    st.markdown("#### Correlation Heatmap")
+        st.markdown("##### Histogram Plot Analysis")
 
-    col1, col2 = st.columns([1, 3])
+        target_customers_df = bank_marketing_df[['age', 'marital', 'education', 'job',
+                                                 'default', 'balance', 'housing', 'loan', 'y']]
 
-    with col2:
-        fig = sns.heatmap(bank_marketing_df.corr(
-            numeric_only=True), cmap='coolwarm').figure
-        st.pyplot(fig)
-        plt.close()
+        col1, col2 = st.columns([1, 3])
+
+        with col1:
+            column_options = ['age', 'marital', 'education', 'job',
+                              'default', 'balance', 'housing', 'loan']
+            column_name = st.selectbox("Column Name", column_options)
+            bins = st.selectbox("Bins", np.linspace(1, 10, 10).astype(int), 9)
+
+        with col2:
+            fig = sns.histplot(data=bank_marketing_df,
+                               x=column_name, hue='y', bins=bins).figure
+            st.pyplot(fig)
+            plt.close()
+
+        st.markdown("##### Scatter Plot Analysis")
+
+        col1, col2 = st.columns([1, 3])
+
+        with col1:
+
+            column_options = ['age', 'marital', 'education', 'job',
+                              'default', 'balance', 'housing', 'loan']
+
+            column_x = st.selectbox("Column for x-axis", column_options, 0)
+            column_y = st.selectbox("Column for y-axis", column_options, 5)
+
+        with col2:
+
+            chart = alt.Chart(target_customers_df).mark_circle().encode(
+                x=column_x, y=column_y, color='y').interactive()
+
+            st.altair_chart(chart, theme="streamlit", use_container_width=True)
+
 
 with tab3:
     st.text("Work in progress...")
