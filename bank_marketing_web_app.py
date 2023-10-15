@@ -85,10 +85,18 @@ with tab2:
 
         with col2:
 
+            custom_color_scale = alt.Scale(
+                domain=['no', 'yes'], range=['red', 'green'])
+
             chart = alt.Chart(target_customers_df).mark_circle().encode(
-                x=column_x, y=column_y, color='y').interactive()
+                x=column_x, y=column_y, color=alt.Color('y:N',
+                                                        scale=custom_color_scale)).interactive()
 
             st.altair_chart(chart, theme="streamlit", use_container_width=True)
+
+    with tab5:
+
+        st.markdown("#### Understanding successful marketing strategies:")
 
 
 with tab3:
