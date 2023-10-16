@@ -4,6 +4,7 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 import altair as alt
+import hiplot as hip
 
 st.title("Bank Marketing Dataset Analysis")
 
@@ -63,7 +64,8 @@ with tab2:
             column_options = ['age', 'marital', 'education', 'job',
                               'default', 'balance', 'housing', 'loan']
             column_name = st.selectbox("Column Name", column_options)
-            bins = st.selectbox("Bins", np.linspace(1, 10, 10).astype(int), 9)
+            bins = st.selectbox("Bins", np.linspace(
+                1, 10, 10).astype(int), 9, key='target_customers')
 
         with col2:
             fig = sns.histplot(data=bank_marketing_df,
@@ -94,9 +96,46 @@ with tab2:
 
             st.altair_chart(chart, theme="streamlit", use_container_width=True)
 
+        st.markdown(
+            "##### Hiplot Visualisation")
+
+        credit_analysis_df = target_customers_df[[
+            'y', 'marital', 'balance', 'job', 'education', 'age']]
+
+        exp = hip.Experiment.from_dataframe(credit_analysis_df)
+
+        def save_hiplot_to_html(exp):
+            output_file = "hiplot_plot.html"
+            exp.to_html(output_file)
+            return output_file
+
+        hiplot_html_file = save_hiplot_to_html(exp)
+        st.components.v1.html(
+            open(hiplot_html_file, 'r').read(), height=1500, scrolling=True)
+
     with tab5:
 
         st.markdown("#### Understanding successful marketing strategies:")
+
+        st.markdown("##### Histogram Plot Analysis")
+
+        strategy_df = bank_marketing_df[['contact', 'day', 'month', 'duration',
+                                         'campaign', 'pdays', 'previous', 'poutcome', 'y']]
+
+        col1, col2 = st.columns([1, 3])
+
+        with col1:
+            column_options = ['contact', 'day', 'month', 'duration',
+                              'campaign', 'pdays', 'previous', 'poutcome', 'y']
+            column_name = st.selectbox("Column Name", column_options)
+            bins = st.selectbox("Bins", np.linspace(
+                1, 10, 10).astype(int), 9, key='strategy')
+
+        with col2:
+            fig = sns.histplot(data=bank_marketing_df,
+                               x=column_name, hue='y', bins=bins).figure
+            st.pyplot(fig)
+            plt.close()
 
 
 with tab3:
