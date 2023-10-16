@@ -5,6 +5,10 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import altair as alt
 import hiplot as hip
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import LabelEncoder
 
 st.title("Bank Marketing Dataset Analysis")
 
@@ -183,4 +187,45 @@ with tab2:
 
 
 with tab3:
-    st.text("Work in progress...")
+
+    st.markdown(
+        "#### Develop a decision tree classifier and predict the subscription outcome")
+
+    st.markdown("##### Model identification:")
+
+    features = st.multiselect(
+        "Select features for modelling", bank_marketing_df.columns[0:16],
+        default=np.array(bank_marketing_df.columns[0:9]))
+
+    train_percent = st.slider("Select percentage of the data for training",
+                              min_value=1, max_value=100, value=75)
+
+    generate_model = st.button("Generate Model", type="primary")
+
+    if generate_model:
+
+        X = bank_marketing_df.drop(columns=['y'])
+        y = bank_marketing_df['y']
+
+        le = LabelEncoder()
+
+        for col in X.columns:
+            if X[col].dtype == 'object':
+                X[col] = le.fit_transform(X[col])
+
+        X_train, X_test, y_train, y_test = train_test_split(X, y,
+                                                            test_size=1 -
+                                                            (float(train_percent)/100),
+                                                            random_state=42)
+
+        classifier = DecisionTreeClassifier()
+
+        classifier.fit(X_train, y_train)
+
+        y_pred = classifier.predict(X_test)
+
+        accuracy = accuracy_score(y_test, y_pred)
+
+        accuracy = round(accuracy*100, 2)
+
+        st.markdown(f"##### Accuracy of the model is {accuracy}%")
