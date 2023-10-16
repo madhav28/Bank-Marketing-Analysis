@@ -3,4 +3,4 @@ pandas
 seaborn
 altair
 hiplot
-sklearn
+scikit-learn
