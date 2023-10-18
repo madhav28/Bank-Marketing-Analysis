@@ -237,7 +237,7 @@ with tab3:
 
             with col2:
 
-                fig = sns.heatmap(target_customers_df.corr(),
+                fig = sns.heatmap(target_customers_df.corr(numeric_only=True),
                                   annot=True, cmap="coolwarm").figure
                 st.pyplot(fig)
                 plt.close()
