@@ -10,7 +10,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import LabelEncoder
 
-st.title("Bank Marketing Dataset Analysis")
+st.title("Bank Marketing Analysis")
 
 tab1, tab2, tab3, tab4, tab5 = st.tabs(
     ['About Data', 'Objectives', 'Data Visualisation / Analysis', 'Predictive Modelling', 'Conclusion'])
