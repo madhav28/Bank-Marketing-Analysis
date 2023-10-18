@@ -21,6 +21,8 @@ bank_marketing_df.rename(columns={'y': 'outcome'},  inplace=True)
 
 with tab1:
 
+    st.image("overview.jpg")
+
     st.markdown("**Data Overview:**")
 
     st.markdown("The data is related with direct marketing campaigns (phone calls) of a Portuguese banking institution. \
@@ -109,36 +111,26 @@ with tab3:
             with col1:
                 box_column_1 = st.selectbox(
                     "Column Name", num_col_options, key="box_column_1")
-                if box_column_1 == "age":
-                    box_age_slider_low_1 = st.slider("Age", min_value=np.min(target_customers_df['age']),
-                                                     max_value=np.max(target_customers_df['age']), value=30,
-                                                     key="box_age_slider_low_1")
-                    box_age_slider_high_1 = st.slider("Age", min_value=box_age_slider_low_1+1,
-                                                      max_value=np.max(target_customers_df['age']), value=40,
-                                                      key="box_age_slider_high_1")
-                if box_column_1 == "balance":
-                    box_balance_slider_low_1 = st.slider("Balance", min_value=np.min(target_customers_df['balance']),
-                                                         max_value=np.max(
-                                                             target_customers_df['balance']),
-                                                         key="box_balance_slider_low_1")
-                    box_balance_slider_high_1 = st.slider("Balance", min_value=box_balance_slider_low_1+1,
-                                                          max_value=np.max(target_customers_df['balance']), value=10000,
-                                                          key="box_balance_slider_high_1")
+
+                min_val = np.min(target_customers_df[box_column_1])
+                max_val = np.max(target_customers_df[box_column_1])
+
+                box_column_1_options = np.unique(
+                    target_customers_df[box_column_1])
+
+                box_column_1_options = np.sort(box_column_1_options)
+
+                box_column_1_start, box_column_1_end = st.select_slider("Select the range of "+box_column_1,
+                                                                        options=box_column_1_options,
+                                                                        value=(
+                                                                            min_val, max_val),
+                                                                        key="box_column_1_range")
 
             with col2:
-                if box_column_1 == "age":
-                    age_min = box_age_slider_low_1
-                    age_max = box_age_slider_high_1
-                    box_df_1 = target_customers_df[(target_customers_df['age']
-                                                   >= age_min) & (target_customers_df['age'] <= age_max)]
+                box_column_1_df = target_customers_df[(target_customers_df[box_column_1] >= box_column_1_start) &
+                                                      (target_customers_df[box_column_1] <= box_column_1_end)]
 
-                if box_column_1 == "balance":
-                    balance_min = box_balance_slider_low_1
-                    balance_max = box_balance_slider_high_1
-                    box_df_1 = target_customers_df[(target_customers_df['balance']
-                                                   >= balance_min) & (target_customers_df['balance'] <= balance_max)]
-
-                fig = sns.boxplot(data=box_df_1,
+                fig = sns.boxplot(data=box_column_1_df,
                                   x='outcome', y=box_column_1).figure
                 st.pyplot(fig)
                 plt.close()
@@ -150,35 +142,27 @@ with tab3:
             with col1:
                 violin_column_1 = st.selectbox(
                     "Column Name", num_col_options, key="violin_column_1")
-                if violin_column_1 == "age":
-                    violin_age_slider_low_1 = st.slider("Age", min_value=np.min(target_customers_df['age']),
-                                                        max_value=np.max(target_customers_df['age']), value=30,
-                                                        key="violin_age_slider_low_1")
-                    violin_age_slider_high_1 = st.slider("Age", min_value=violin_age_slider_low_1+1,
-                                                         max_value=np.max(target_customers_df['age']), value=40,
-                                                         key="violin_age_slider_high_1")
-                if violin_column_1 == "balance":
-                    violin_balance_slider_low_1 = st.slider("Balance", min_value=np.min(target_customers_df['balance']),
-                                                            max_value=np.max(
-                                                                target_customers_df['balance']),
-                                                            key="violin_balance_slider_low_1")
-                    violin_balance_slider_high_1 = st.slider("Balance", min_value=box_balance_slider_low_1+1,
-                                                             max_value=np.max(target_customers_df['balance']), value=10000,
-                                                             key="violin_balance_slider_high_1")
+
+                min_val = np.min(target_customers_df[violin_column_1])
+                max_val = np.max(target_customers_df[violin_column_1])
+
+                violin_column_1_options = np.unique(
+                    target_customers_df[violin_column_1])
+
+                violin_column_1_options = np.sort(violin_column_1_options)
+
+                violin_column_1_start, violin_column_1_end = st.select_slider("Select the range of "+violin_column_1,
+                                                                              options=violin_column_1_options,
+                                                                              value=(
+                                                                                  min_val, max_val),
+                                                                              key="violin_column_1_range")
 
             with col2:
-                if violin_column_1 == "age":
-                    age_min = violin_age_slider_low_1
-                    age_max = violin_age_slider_high_1
-                    violin_df_1 = target_customers_df[(target_customers_df['age']
-                                                       >= age_min) & (target_customers_df['age'] <= age_max)]
 
-                if violin_column_1 == "balance":
-                    balance_min = violin_balance_slider_low_1
-                    balance_max = violin_balance_slider_high_1
-                    violin_df_1 = target_customers_df[(target_customers_df['balance']
-                                                       >= balance_min) & (target_customers_df['balance'] <= balance_max)]
-                fig = sns.violinplot(data=violin_df_1,
+                violin_column_1_df = target_customers_df[(target_customers_df[violin_column_1] >= violin_column_1_start) &
+                                                         (target_customers_df[violin_column_1] <= violin_column_1_end)]
+
+                fig = sns.violinplot(data=violin_column_1_df,
                                      x='outcome', y=violin_column_1).figure
                 st.pyplot(fig)
                 plt.close()
@@ -337,9 +321,25 @@ with tab3:
                 box_column_2 = st.selectbox(
                     "Column Name", num_col_options, key="box_column_2")
 
+                min_val = np.min(strategies_df[box_column_2])
+                max_val = np.max(strategies_df[box_column_2])
+
+                box_column_2_options = np.unique(strategies_df[box_column_2])
+
+                box_column_2_options = np.sort(box_column_2_options)
+
+                box_column_2_start, box_column_2_end = st.select_slider("Select the range of "+box_column_2,
+                                                                        options=box_column_2_options,
+                                                                        value=(
+                                                                            min_val, max_val),
+                                                                        key="box_column_2_range")
+
             with col2:
 
-                fig = sns.boxplot(data=bank_marketing_df,
+                box_column_2_df = strategies_df[(strategies_df[box_column_2] >= box_column_2_start) &
+                                                (strategies_df[box_column_2] <= box_column_2_end)]
+
+                fig = sns.boxplot(data=box_column_2_df,
                                   x='outcome', y=box_column_2).figure
                 st.pyplot(fig)
                 plt.close()
@@ -352,8 +352,24 @@ with tab3:
                 violin_column_2 = st.selectbox(
                     "Column Name", num_col_options, key="violin_column_2")
 
+                min_val = np.min(strategies_df[violin_column_2])
+                max_val = np.max(strategies_df[violin_column_2])
+
+                violin_column_2_options = np.unique(
+                    strategies_df[violin_column_2])
+
+                violin_column_2_options = np.sort(violin_column_2_options)
+
+                violin_column_2_start, violin_column_2_end = st.select_slider("Select the range of "+violin_column_2,
+                                                                              options=violin_column_2_options,
+                                                                              value=(
+                                                                                  min_val, max_val),
+                                                                              key="violin_column_2_range")
+
             with col2:
-                fig = sns.violinplot(data=bank_marketing_df,
+                violin_column_2_df = strategies_df[(strategies_df[violin_column_2] >= violin_column_2_start) &
+                                                   (strategies_df[violin_column_2] <= violin_column_2_end)]
+                fig = sns.violinplot(data=violin_column_2_df,
                                      x='outcome', y=violin_column_2).figure
                 st.pyplot(fig)
                 plt.close()
