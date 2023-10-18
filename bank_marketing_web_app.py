@@ -520,8 +520,8 @@ with tab4:
 
     if generate_model:
 
-        X = bank_marketing_df.drop(columns=['y'])
-        y = bank_marketing_df['y']
+        X = bank_marketing_df.drop(columns=['outcome'])
+        y = bank_marketing_df['outcome']
 
         le = LabelEncoder()
 
