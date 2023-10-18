@@ -130,8 +130,11 @@ with tab3:
                 box_column_1_df = target_customers_df[(target_customers_df[box_column_1] >= box_column_1_start) &
                                                       (target_customers_df[box_column_1] <= box_column_1_end)]
 
+                palette = {"no": "#33B5FF", "yes": "#FFB533"}
+
                 fig = sns.boxplot(data=box_column_1_df,
-                                  x='outcome', y=box_column_1).figure
+                                  x='outcome', y=box_column_1,
+                                  palette=palette).figure
                 st.pyplot(fig)
                 plt.close()
 
@@ -162,16 +165,16 @@ with tab3:
                 violin_column_1_df = target_customers_df[(target_customers_df[violin_column_1] >= violin_column_1_start) &
                                                          (target_customers_df[violin_column_1] <= violin_column_1_end)]
 
+                palette = {"no": "#33B5FF", "yes": "#FFB533"}
+
                 fig = sns.violinplot(data=violin_column_1_df,
-                                     x='outcome', y=violin_column_1).figure
+                                     x='outcome', y=violin_column_1,
+                                     palette=palette).figure
                 st.pyplot(fig)
                 plt.close()
 
             st.markdown(
-                "**From the above plots, we get the following inferences:**")
-
-            st.markdown(
-                "Following are the desirable traits of a potential subscriber")
+                "**💡 From the above plot analysis, we get the following as the desirable traits of a potential subscriber:**")
 
             df1 = {'Features': column_options}
 
@@ -249,7 +252,7 @@ with tab3:
                 st.pyplot(fig)
                 plt.close()
 
-            st.markdown("Here, from the plots we can infer that irrespectively of the age, \
+            st.markdown("💡 Here, from the plot analysis we can infer that irrespectively of the age, \
                         most of the people have balance less than 5000. We can also validate this from the \
                         Heat Map plot. And most of the subscriptions fall in this balance range.")
 
@@ -275,7 +278,7 @@ with tab3:
             st.components.v1.html(
                 open(hiplot_html_file, 'r').read(), height=1200, scrolling=True)
 
-            st.markdown("From the Hiplot, we can get an overview on what kind of clients are \
+            st.markdown("💡 From the Hiplot, we can get an overview on what kind of clients are \
                         more likely to subscribe to a term deposit. So, the clients of age in \
                         the range of 30-40, with atleast a secondary education, with a balance less \
                         than 5000, with no personal loans, and those who are married are more likely \
@@ -339,8 +342,11 @@ with tab3:
                 box_column_2_df = strategies_df[(strategies_df[box_column_2] >= box_column_2_start) &
                                                 (strategies_df[box_column_2] <= box_column_2_end)]
 
+                palette = {"no": "#33B5FF", "yes": "#FFB533"}
+
                 fig = sns.boxplot(data=box_column_2_df,
-                                  x='outcome', y=box_column_2).figure
+                                  x='outcome', y=box_column_2,
+                                  palette=palette).figure
                 st.pyplot(fig)
                 plt.close()
 
@@ -369,8 +375,12 @@ with tab3:
             with col2:
                 violin_column_2_df = strategies_df[(strategies_df[violin_column_2] >= violin_column_2_start) &
                                                    (strategies_df[violin_column_2] <= violin_column_2_end)]
+
+                palette = {"no": "#33B5FF", "yes": "#FFB533"}
+
                 fig = sns.violinplot(data=violin_column_2_df,
-                                     x='outcome', y=violin_column_2).figure
+                                     x='outcome', y=violin_column_2,
+                                     palette=palette).figure
                 st.pyplot(fig)
                 plt.close()
 
@@ -454,7 +464,8 @@ with tab3:
                 st.pyplot(fig)
                 plt.close()
 
-            st.markdown("We can infer the following from the above plots:")
+            st.markdown(
+                "We can infer the following from the above plot analysis:")
             st.markdown("⭐ Most of the clients who subscribed in the previous campaign are \
                         mostly going to subscribe for the term deposit in the current campaign.")
             st.markdown("⭐ From the Correlation Heat Map, we can see that most of the features are \
@@ -485,7 +496,7 @@ with tab3:
             st.components.v1.html(
                 open(hiplot_html_file, 'r').read(), height=1200, scrolling=True)
 
-            st.markdown("From the Hiplot visualisation, we can see that when the outcome of the previous \
+            st.markdown("💡 From the Hiplot visualisation, we can see that when the outcome of the previous \
                         campaign is a success then the number of successes is greater than the number of \
                         failures unlike other cases. Looking at the campaign, we can determine that for most of \
                         the sucesses the number of contacts made is less than 10.")
