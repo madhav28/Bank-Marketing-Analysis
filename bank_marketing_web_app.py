@@ -154,7 +154,7 @@ with tab3:
                     violin_age_slider_low_1 = st.slider("Age", min_value=np.min(target_customers_df['age']),
                                                         max_value=np.max(target_customers_df['age']), value=30,
                                                         key="violin_age_slider_low_1")
-                    violin_age_slider_high_1 = st.slider("Age", min_value=box_age_slider_low_1+1,
+                    violin_age_slider_high_1 = st.slider("Age", min_value=violin_age_slider_low_1+1,
                                                          max_value=np.max(target_customers_df['age']), value=40,
                                                          key="violin_age_slider_high_1")
                 if violin_column_1 == "balance":
@@ -360,19 +360,19 @@ with tab3:
 
             st.markdown(
                 "**From the above plots, we get the following inferences:**  ")
-            st.markdown("* Last contact day of the week doesn't determine the outcome of the subscription \
+            st.markdown("⭐ Last contact day of the week doesn't determine the outcome of the subscription \
                         because the outcomes are fairly randomly distributed.")
-            st.markdown("* Percentage of subscriptions are very high when the last contacted months are \
+            st.markdown("⭐ Percentage of subscriptions are very high when the last contacted months are \
                          March, September, October and December. Client who are last contacted in those \
                          months are more likely to subscribe to a term deposit.")
-            st.markdown("* As the duration of call with the client increases, the probability of the client \
+            st.markdown("⭐ As the duration of call with the client increases, the probability of the client \
                         subscribing to a term deposit increases. Because this shows that client is interested \
                         in the conversation and considering to subcribe.")
-            st.markdown("* Optimal number of contacts to be performed for a successful subscription is less than 10. \
+            st.markdown("⭐ Optimal number of contacts to be performed for a successful subscription is less than 10. \
                         After 10 contacts the subscription rate is very low.")
-            st.markdown("* Majority of the customers decide whether to subscribe to a term deposit or not \
+            st.markdown("⭐ Majority of the customers decide whether to subscribe to a term deposit or not \
                         within 100 days of the previous campaign.")
-            st.markdown("* Clients who subscribed to a term deposit in the previous campaign are highly likely \
+            st.markdown("⭐ Clients who subscribed to a term deposit in the previous campaign are highly likely \
                         to subscribe to a term deposit.")
 
         rel_plot_analysis_2 = st.checkbox(
@@ -439,13 +439,13 @@ with tab3:
                 plt.close()
 
             st.markdown("We can infer the following from the above plots:")
-            st.markdown("* Most of clients who subscribed in the previous campaign are \
+            st.markdown("⭐ Most of the clients who subscribed in the previous campaign are \
                         mostly going to subscribe for the term deposit in the current campaign.")
-            st.markdown("* From the Correlation Heat Map, we can see that most of the features are \
+            st.markdown("⭐ From the Correlation Heat Map, we can see that most of the features are \
                         not correlated with each other except previous and pdays where the correlation \
                         between these two features is 0.45.")
             st.markdown(
-                "* Optimal number of contants for a successful subscribers is less than 10.")
+                "⭐ Optimal number of contants for a successful subscribers is less than 10.")
 
         hiplot_analysis_2 = st.checkbox(
             "Hiplot Visualisation", key="hiplot_analysis_2")
@@ -522,7 +522,7 @@ with tab4:
 
 with tab5:
 
-    st.markdown("**Desirable traits of the target customers:**  ")
+    st.markdown("**💡 Desirable traits of the target customers:**  ")
 
     fea_col = ['age', 'marital', 'education', 'job',
                'default', 'balance', 'housing', 'loan']
@@ -533,7 +533,7 @@ with tab5:
     traits_df = pd.DataFrame(traits)
     st.table(traits_df)
 
-    st.markdown("**Marketing Strategy:**  ")
+    st.markdown("**💡 Marketing Strategy:**  ")
     st.markdown("As a first step, the bank should allocate most of its resources for the marketing \
                 campaign on the clients with the above traits. Since these clients are the potential \
                 subscribers. Later, banks should optimise contacts with the clients based on the duration \
@@ -541,7 +541,7 @@ with tab5:
                 contacts exceeds more than 10 then the client is not a potential subscriber. Instead of \
                 contacting this client, bank can focus their resourses on other potential new subscribers.")
 
-    st.markdown("**Final Remarks:**  ")
+    st.markdown("**💡 Final Remarks:**  ")
     st.markdown("Through this application, we performed IDA and EDA on the Bank Marketing Dataset \
                 to get valuable insights from the data. These insights helped us to design a \
                 optimal marketing campaign for increasing the number of clients subscribing for a \
