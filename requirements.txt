@@ -2,5 +2,6 @@ streamlit
 pandas
 seaborn
 altair
+plotly
 hiplot
 scikit-learn
