@@ -2,9 +2,10 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import seaborn as sns
-import matplotlib.pyplot as plt
+import plotly.express as px
 import altair as alt
 import hiplot as hip
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
@@ -73,16 +74,27 @@ with tab3:
         st.markdown("#### Understanding what kind of customers are likely \
                     to subscribe to a term deposit")
 
+        st.markdown(
+            "The following features of the data are analysed in this tab:")
+        st.markdown("**age, marital, education, job, default, \
+                    balance, housing, loan, and outcome**")
+
         target_customers_df = bank_marketing_df[['age', 'marital', 'education', 'job',
                                                  'default', 'balance', 'housing', 'loan', 'outcome']]
 
+        st.markdown("Select the following checkboxes to analyse the data:")
+
         feature_analysis_1 = st.checkbox(
-            "Feature Analysis", key="feature_analysis_1")
+            "**Feature Analysis**", key="feature_analysis_1")
 
         column_options = ['age', 'marital', 'education', 'job',
                           'default', 'balance', 'housing', 'loan']
 
         if feature_analysis_1:
+
+            st.markdown("#### Feature Analysis")
+
+            st.markdown("---")
 
             st.markdown("##### Histogram Plot")
 
@@ -101,6 +113,17 @@ with tab3:
                                    x=column_name, hue='outcome', bins=bins).figure
                 st.pyplot(fig)
                 plt.close()
+
+            st.markdown("A histogram plot is a graphical representation of the distribution \
+                        of the data. Here, histogram plots are plotted for all the features \
+                        in this tab and hue in every histogram is set equal to outcome. Users \
+                        can select the feature of their interest, set the number of bins and \
+                        visualise the distributions. Through these distributions, users can \
+                        get an idea about the population distribution of each feature. \
+                        Decisive conclusions can be made by understanding for what values \
+                        on the x-axis the count of the outcome on the y-axis is the most.")
+
+            st.markdown("---")
 
             st.markdown("##### Box Plot")
 
@@ -130,13 +153,21 @@ with tab3:
                 box_column_1_df = target_customers_df[(target_customers_df[box_column_1] >= box_column_1_start) &
                                                       (target_customers_df[box_column_1] <= box_column_1_end)]
 
-                palette = {"no": "#33B5FF", "yes": "#FFB533"}
+                custom_colors = {'yes': '#FFB533', 'no': '#33B5FF'}
 
-                fig = sns.boxplot(data=box_column_1_df,
-                                  x='outcome', y=box_column_1,
-                                  palette=palette).figure
-                st.pyplot(fig)
+                fig = px.box(box_column_1_df,
+                             x='outcome', y=box_column_1,
+                             color='outcome', color_discrete_map=custom_colors)
+
+                st.plotly_chart(fig)
                 plt.close()
+
+            st.markdown(
+                "A box plot provide summary of the key statistics of the data like quartile information and outliers. \
+                Here, box plots give us information about the spread of the feature data with respect to the \
+                campaign outcome.")
+
+            st.markdown("---")
 
             st.markdown("##### Violin Plot")
 
@@ -165,16 +196,25 @@ with tab3:
                 violin_column_1_df = target_customers_df[(target_customers_df[violin_column_1] >= violin_column_1_start) &
                                                          (target_customers_df[violin_column_1] <= violin_column_1_end)]
 
-                palette = {"no": "#33B5FF", "yes": "#FFB533"}
+                custom_colors = {'yes': '#FFB533', 'no': '#33B5FF'}
 
-                fig = sns.violinplot(data=violin_column_1_df,
-                                     x='outcome', y=violin_column_1,
-                                     palette=palette).figure
-                st.pyplot(fig)
+                fig = px.violin(violin_column_1_df, box=True,
+                                x='outcome', y=violin_column_1,
+                                color='outcome', color_discrete_map=custom_colors)
+
+                st.plotly_chart(fig)
                 plt.close()
 
+            st.markdown("A violin plot is a data visualization that combines elements of a box \
+                        plot with a kernel density estimation plot. Through the violine plots, we \
+                        can estimate the most likely value of a feature with respect to a \
+                        particular outcome.")
+
+            st.markdown("---")
+
             st.markdown(
-                "**💡 From the above plot analysis, we get the following as the desirable traits of a potential subscriber:**")
+                "**💡 Using the histogram, box, and violin plots, the following are identified \
+                as the desirable traits of a potential subscriber:**")
 
             df1 = {'Features': column_options}
 
@@ -187,12 +227,18 @@ with tab3:
 
             st.table(df1)
 
+            st.markdown("---")
+
         rel_plot_analysis_1 = st.checkbox(
-            "Analysing the Relationship between Features", key="rel_plot_analysis_1")
+            "**Analysing the Relationship between Features**", key="rel_plot_analysis_1")
 
         if rel_plot_analysis_1:
 
-            st.markdown("##### Scatter Plot")
+            st.markdown("#### Analysing the Relationship between Features")
+
+            st.markdown("---")
+
+            st.markdown("##### 2D Scatter Plot")
 
             col1, col2 = st.columns([1, 3])
 
@@ -218,6 +264,50 @@ with tab3:
                 st.altair_chart(chart, theme="streamlit",
                                 use_container_width=True)
 
+            st.markdown("A 2d scatter plot is a type of data visualisation where \
+                        we plot points corresponding to two variables on a \
+                        two-dimensional coordinate system. Here, user is given an option \
+                        to visualise 2d scatter plots between any two variables and points are \
+                        colored either as red or green based on the outcome. Through these plots, \
+                        user can understand the relationship between two features of the data.")
+
+            st.markdown("---")
+
+            st.markdown("##### 3D Scatter Plot")
+
+            col1, col2 = st.columns([1, 3])
+
+            with col1:
+
+                column_options = ['age', 'marital', 'education', 'job',
+                                  'default', 'balance', 'housing', 'loan']
+
+                column_x = st.selectbox(
+                    "Column for x-axis", column_options, 0, key='target_customers_s3x')
+                column_y = st.selectbox(
+                    "Column for y-axis", column_options, 4, key='target_customers_s3y')
+                column_z = st.selectbox(
+                    "Column for z-axis", column_options, 7, key='target_customers_s3z')
+
+            with col2:
+
+                custom_colors = {'yes': 'green', 'no': 'red'}
+
+                fig = px.scatter_3d(target_customers_df,
+                                    x=column_x, y=column_y, z=column_z,
+                                    color='outcome', color_discrete_map=custom_colors)
+
+                st.plotly_chart(fig)
+
+            st.markdown("A scatter 3d plot is a type of data visualisation where \
+                        we plot points corresponding to three variables on a \
+                        three-dimensional coordinate system. Here, user is given an option \
+                        to visualise 3d scatter plots between any three variables and points are \
+                        colored either as red or green based on the outcome. Through these plots, \
+                        user can understand the relationship between three features of the data.")
+
+            st.markdown("---")
+
             st.markdown("##### Correlation Heat Map")
 
             col1, col2 = st.columns([1, 3])
@@ -229,40 +319,35 @@ with tab3:
                 st.pyplot(fig)
                 plt.close()
 
-            st.markdown("##### KDE Plot")
+            st.markdown("A correlation heat map is a graphical representation of a correlation \
+                        matrix that displays the pairwise correlation coefficients between all \
+                        the numeric variables. Here, we only see correlation matrix for only \
+                        two variables (age and balance) because there are only two numeric \
+                        features out of all eight features.")
 
-            col1, col2 = st.columns([1, 3])
+            st.markdown("---")
 
-            with col1:
-
-                num_col_options = ['age', 'balance']
-
-                box_cx_1 = st.selectbox(
-                    "Column for x-axis", num_col_options, 0, key="box_cx_1")
-                box_cy_1 = st.selectbox(
-                    "Column for y-axis", num_col_options, 1, key="box_cy_1")
-
-            with col2:
-
-                kde_df_1 = target_customers_df[(target_customers_df['balance'] <= 10000) & (
-                    target_customers_df['age'] <= 90)]
-
-                fig = sns.kdeplot(kde_df_1,
-                                  x=box_cx_1, y=box_cy_1).figure
-                st.pyplot(fig)
-                plt.close()
-
-            st.markdown("💡 Here, from the plot analysis we can infer that irrespectively of the age, \
-                        most of the people have balance less than 5000. We can also validate this from the \
-                        Heat Map plot. And most of the subscriptions fall in this balance range.")
+            st.markdown(
+                "**From the scatter plots and correlation heat map, we can infer the following:**")
+            st.markdown("⭐ Irrespective of the age most of the people have balance less than 5000. \
+                        Also, there is no correlation between age and balance.")
+            st.markdown(
+                "⭐ Most of the people who have taken a personal and have credit in default have an \
+                    age of greater than or equal to 45. There kind of people rarlely subscribe to a \
+                    term deposit.")
+            st.markdown("⭐ Out of loan and default features, default is a stronger feature in \
+                        deciding the subscription outcome. Irrespective of loan, subscription rate \
+                        drastically increases when the person has no credit default.")
 
         hiplot_visualisation_1 = st.checkbox(
-            "Hiplot Visualisation", key="hiplot_visualisation_1")
+            "**Hiplot Visualisation**", key="hiplot_visualisation_1")
 
         if hiplot_visualisation_1:
 
             st.markdown(
-                "##### Hiplot Visualisation")
+                "#### Hiplot Visualisation")
+
+            st.markdown("---")
 
             credit_analysis_df = target_customers_df[[
                 'outcome', 'marital', 'loan', 'balance', 'job', 'education', 'age']]
@@ -278,6 +363,8 @@ with tab3:
             st.components.v1.html(
                 open(hiplot_html_file, 'r').read(), height=1200, scrolling=True)
 
+            st.markdown("---")
+
             st.markdown("💡 From the Hiplot, we can get an overview on what kind of clients are \
                         more likely to subscribe to a term deposit. So, the clients of age in \
                         the range of 30-40, with atleast a secondary education, with a balance less \
@@ -287,14 +374,24 @@ with tab3:
     with tab7:
 
         st.markdown("#### Understanding successful marketing strategies")
+        st.markdown(
+            "The following features of the data are analysed in this tab:")
+        st.markdown("**contact, day, month, duration, campaign, pdays, \
+                    previous, poutcome, and outcome**")
+
+        st.markdown("Select the following checkboxes to analyse the data:")
 
         feature_analysis_2 = st.checkbox(
-            "Feature Analysis", key="feature_analysis_2")
+            "**Feature Analysis**", key="feature_analysis_2")
 
         strategies_df = bank_marketing_df[['contact', 'day', 'month', 'duration',
                                            'campaign', 'pdays', 'previous', 'poutcome', 'outcome']]
 
         if feature_analysis_2:
+
+            st.markdown("#### Feature Analysis")
+
+            st.markdown("---")
 
             st.markdown("##### Histogram Plot")
 
@@ -312,6 +409,17 @@ with tab3:
                                    x=column_name, hue='outcome', bins=bins).figure
                 st.pyplot(fig)
                 plt.close()
+
+            st.markdown("A histogram plot is a graphical representation of the distribution \
+                        of the data. Here, histogram plots are plotted for all the features \
+                        in this tab and hue in every histogram is set equal to outcome. Users \
+                        can select the feature of their interest, set the number of bins and \
+                        visualise the distributions. Through these distributions, users can \
+                        get an idea about the population distribution of each feature. \
+                        Decisive conclusions can be made by understanding for what values \
+                        on the x-axis the count of the outcome on the y-axis is the most.")
+
+            st.markdown("---")
 
             st.markdown("##### Box Plot")
 
@@ -342,13 +450,21 @@ with tab3:
                 box_column_2_df = strategies_df[(strategies_df[box_column_2] >= box_column_2_start) &
                                                 (strategies_df[box_column_2] <= box_column_2_end)]
 
-                palette = {"no": "#33B5FF", "yes": "#FFB533"}
+                custom_colors = {'yes': '#FFB533', 'no': '#33B5FF'}
 
-                fig = sns.boxplot(data=box_column_2_df,
-                                  x='outcome', y=box_column_2,
-                                  palette=palette).figure
-                st.pyplot(fig)
+                fig = px.box(box_column_2_df,
+                             x='outcome', y=box_column_2,
+                             color='outcome', color_discrete_map=custom_colors)
+
+                st.plotly_chart(fig)
                 plt.close()
+
+            st.markdown(
+                "A box plot provide summary of the key statistics of the data like quartile information and outliers. \
+                Here, box plots give us information about the spread of the feature data with respect to the \
+                campaign outcome.")
+
+            st.markdown("---")
 
             st.markdown("##### Violin Plot")
 
@@ -376,16 +492,24 @@ with tab3:
                 violin_column_2_df = strategies_df[(strategies_df[violin_column_2] >= violin_column_2_start) &
                                                    (strategies_df[violin_column_2] <= violin_column_2_end)]
 
-                palette = {"no": "#33B5FF", "yes": "#FFB533"}
+                custom_colors = {'yes': '#FFB533', 'no': '#33B5FF'}
 
-                fig = sns.violinplot(data=violin_column_2_df,
-                                     x='outcome', y=violin_column_2,
-                                     palette=palette).figure
-                st.pyplot(fig)
+                fig = px.violin(violin_column_2_df, box=True,
+                                x='outcome', y=violin_column_2,
+                                color='outcome', color_discrete_map=custom_colors)
+
+                st.plotly_chart(fig)
                 plt.close()
 
+            st.markdown("A violin plot is a data visualization that combines elements of a box \
+                        plot with a kernel density estimation plot. Through the violine plots, we \
+                        can estimate the most likely value of a feature with respect to a \
+                        particular outcome.")
+
+            st.markdown("---")
+
             st.markdown(
-                "**From the above plots, we get the following inferences:**  ")
+                "**From the histogram, box, and violin plots, we get the following inferences:**  ")
             st.markdown("⭐ Last contact day of the week doesn't determine the outcome of the subscription \
                         because the outcomes are fairly randomly distributed.")
             st.markdown("⭐ Percentage of subscriptions are very high when the last contacted months are \
@@ -402,11 +526,15 @@ with tab3:
                         to subscribe to a term deposit.")
 
         rel_plot_analysis_2 = st.checkbox(
-            "Analysing the Relationship between Features", key="rel_plot_analysis_2")
+            "**Analysing the Relationship between Features**", key="rel_plot_analysis_2")
 
         if rel_plot_analysis_2:
 
-            st.markdown("##### Scatter Plot")
+            st.markdown("#### Analysing the Relationship between Features")
+
+            st.markdown("---")
+
+            st.markdown("##### 2D Scatter Plot")
 
             col1, col2 = st.columns([1, 3])
 
@@ -416,9 +544,9 @@ with tab3:
                                   'campaign', 'pdays', 'previous', 'poutcome', 'outcome']
 
                 column_x = st.selectbox(
-                    "Column for x-axis", column_options, 6, key='strategies_sx')
+                    "Column for x-axis", column_options, 3, key='strategies_sx')
                 column_y = st.selectbox(
-                    "Column for y-axis", column_options, 7, key='strategies_sy')
+                    "Column for y-axis", column_options, 4, key='strategies_sy')
 
             with col2:
 
@@ -432,6 +560,43 @@ with tab3:
                 st.altair_chart(chart, theme="streamlit",
                                 use_container_width=True)
 
+            st.markdown("---")
+
+            st.markdown("##### 3D Scatter Plot")
+
+            col1, col2 = st.columns([1, 3])
+
+            with col1:
+
+                column_options = ['contact', 'day', 'month', 'duration',
+                                  'campaign', 'pdays', 'previous', 'poutcome', 'outcome']
+
+                column_x = st.selectbox(
+                    "Column for x-axis", column_options, 1, key='strategies_s3x')
+                column_y = st.selectbox(
+                    "Column for y-axis", column_options, 2, key='strategies_s3y')
+                column_z = st.selectbox(
+                    "Column for z-axis", column_options, 0, key='strategies_s3z')
+
+            with col2:
+
+                custom_colors = {'yes': 'green', 'no': 'red'}
+
+                fig = px.scatter_3d(strategies_df,
+                                    x=column_x, y=column_y, z=column_z,
+                                    color='outcome', color_discrete_map=custom_colors)
+
+                st.plotly_chart(fig)
+
+            st.markdown("A scatter 3d plot is a type of data visualisation where \
+                        we plot points corresponding to three variables on a \
+                        three-dimensional coordinate system. Here, user is given an option \
+                        to visualise 3d scatter plots between any three variables and points are \
+                        colored either as red or green based on the outcome. Through these plots, \
+                        user can understand the relationship between three features of the data.")
+
+            st.markdown("---")
+
             st.markdown("##### Correlation Heat Map")
 
             col1, col2 = st.columns([1, 3])
@@ -443,29 +608,16 @@ with tab3:
                 st.pyplot(fig)
                 plt.close()
 
-            st.markdown("##### KDE Plot")
+            st.markdown("A correlation heat map is a graphical representation of a correlation \
+                        matrix that displays the pairwise correlation coefficients between all \
+                        the numeric variables. Here, we only see correlation matrix for only \
+                        two variables (age and balance) because there are only two numeric \
+                        features out of all eight features.")
 
-            col1, col2 = st.columns([1, 3])
-
-            with col1:
-
-                num_col_options = ["day", "duration",
-                                   "campaign", "pdays"]
-
-                box_cx_2 = st.selectbox(
-                    "Column for x-axis", num_col_options, 0, key="box_cx_2")
-                box_cy_2 = st.selectbox(
-                    "Column for y-axis", num_col_options, 1, key="box_cy_2")
-
-            with col2:
-
-                fig = sns.kdeplot(strategies_df,
-                                  x=box_cx_2, y=box_cy_2).figure
-                st.pyplot(fig)
-                plt.close()
+            st.markdown("---")
 
             st.markdown(
-                "We can infer the following from the above plot analysis:")
+                "**We can infer the following from the above plot analysis:**")
             st.markdown("⭐ Most of the clients who subscribed in the previous campaign are \
                         mostly going to subscribe for the term deposit in the current campaign.")
             st.markdown("⭐ From the Correlation Heat Map, we can see that most of the features are \
@@ -475,12 +627,14 @@ with tab3:
                 "⭐ Optimal number of contants for a successful subscribers is less than 10.")
 
         hiplot_analysis_2 = st.checkbox(
-            "Hiplot Visualisation", key="hiplot_analysis_2")
+            "**Hiplot Visualisation**", key="hiplot_analysis_2")
 
         if hiplot_analysis_2:
 
             st.markdown(
-                "##### Hiplot Visualisation")
+                "#### Hiplot Visualisation")
+
+            st.markdown("---")
 
             strategy_analysis_df = strategies_df[[
                 'outcome', 'campaign', 'poutcome', 'previous']]
@@ -495,6 +649,8 @@ with tab3:
             hiplot_html_file = save_hiplot_to_html(exp)
             st.components.v1.html(
                 open(hiplot_html_file, 'r').read(), height=1200, scrolling=True)
+
+            st.markdown("---")
 
             st.markdown("💡 From the Hiplot visualisation, we can see that when the outcome of the previous \
                         campaign is a success then the number of successes is greater than the number of \
@@ -560,6 +716,8 @@ with tab5:
     traits_df = pd.DataFrame(traits)
     st.table(traits_df)
 
+    st.markdown("---")
+
     st.markdown("**💡 Marketing Strategy:**  ")
     st.markdown("As a first step, the bank should allocate most of its resources for the marketing \
                 campaign on the clients with the above traits. Since these clients are the potential \
@@ -567,6 +725,8 @@ with tab5:
                 and number of previous contacts. If the duration of the calls is short and the number of \
                 contacts exceeds more than 10 then the client is not a potential subscriber. Instead of \
                 contacting this client, bank can focus their resourses on other potential new subscribers.")
+
+    st.markdown("---")
 
     st.markdown("**💡 Final Remarks:**  ")
     st.markdown("Through this application, we performed IDA and EDA on the Bank Marketing Dataset \
