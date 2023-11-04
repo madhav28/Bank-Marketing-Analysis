@@ -800,9 +800,10 @@ with tab4:
         y_pred = classifier.predict(X_pred)
 
         if y_pred == "yes":
-            st.markdown("#### Subscription Outcome: Yes")
+            st.markdown("#### Subscription Outcome: Client will subscribe.")
         else:
-            st.markdown("#### Subscription Outcome: No")
+            st.markdown(
+                "#### Subscription Outcome: Client will not subscribe.")
 
 with tab5:
 
