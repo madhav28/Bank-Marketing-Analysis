@@ -365,11 +365,11 @@ with tab3:
 
             st.markdown("---")
 
-            st.markdown("💡 From the Hiplot, we can get an overview on what kind of clients are \
+            st.markdown("💡 **From the Hiplot, we can get an overview on what kind of clients are \
                         more likely to subscribe to a term deposit. So, the clients of age in \
                         the range of 30-40, with atleast a secondary education, with a balance less \
                         than 5000, with no personal loans, and those who are married are more likely \
-                        to subscribe to a term deposit.")
+                        to subscribe to a term deposit.**")
 
     with tab7:
 
@@ -652,10 +652,10 @@ with tab3:
 
             st.markdown("---")
 
-            st.markdown("💡 From the Hiplot visualisation, we can see that when the outcome of the previous \
+            st.markdown("💡 **From the Hiplot visualisation, we can see that when the outcome of the previous \
                         campaign is a success then the number of successes is greater than the number of \
                         failures unlike other cases. Looking at the campaign, we can determine that for most of \
-                        the sucesses the number of contacts made is less than 10.")
+                        the sucesses the number of contacts made is less than 10.**")
 
 
 with tab4:
