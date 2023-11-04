@@ -663,45 +663,146 @@ with tab4:
     st.markdown(
         "#### Develop a decision tree classifier and predict the subscription outcome")
 
-    st.markdown("##### Model identification:")
+    st.markdown("---")
+
+    st.markdown("#### Model Development")
 
     features = st.multiselect(
         "Select features for modelling", bank_marketing_df.columns[0:16],
-        default=np.array(bank_marketing_df.columns[0:9]))
+        default=np.array(bank_marketing_df.columns[0:16]))
 
     train_percent = st.slider("Select percentage of the data for training",
-                              min_value=1, max_value=100, value=75)
+                              min_value=1, max_value=100, value=20)
 
-    generate_model = st.button("Generate Model", type="primary")
+    max_tree_depth = st.number_input(
+        "Maximum Tree Depth:", value=5, step=1, format="%d")
 
-    if generate_model:
+    X = bank_marketing_df[features]
+    y = bank_marketing_df['outcome']
 
-        X = bank_marketing_df.drop(columns=['outcome'])
-        y = bank_marketing_df['outcome']
+    label_encoders = {}
 
-        le = LabelEncoder()
+    for col in X.columns:
+        label_encoder = LabelEncoder()
+        X[col] = label_encoder.fit_transform(X[col])
+        label_encoders[col] = label_encoder
 
-        for col in X.columns:
-            if X[col].dtype == 'object':
-                X[col] = le.fit_transform(X[col])
+    X_train, X_test, y_train, y_test = train_test_split(X, y,
+                                                        test_size=1 -
+                                                        (float(train_percent)/100),
+                                                        random_state=42)
 
-        X_train, X_test, y_train, y_test = train_test_split(X, y,
-                                                            test_size=1 -
-                                                            (float(train_percent)/100),
-                                                            random_state=42)
+    classifier = DecisionTreeClassifier(max_depth=max_tree_depth)
 
-        classifier = DecisionTreeClassifier()
+    classifier.fit(X_train, y_train)
 
-        classifier.fit(X_train, y_train)
+    y_train_pred = classifier.predict(X_train)
 
-        y_pred = classifier.predict(X_test)
+    y_test_pred = classifier.predict(X_test)
 
-        accuracy = accuracy_score(y_test, y_pred)
+    train_accuracy = accuracy_score(y_train, y_train_pred)
 
-        accuracy = round(accuracy*100, 2)
+    test_accuracy = accuracy_score(y_test, y_test_pred)
 
-        st.markdown(f"##### Accuracy of the model is {accuracy}%")
+    train_accuracy = round(train_accuracy*100, 2)
 
+    test_accuracy = round(test_accuracy*100, 2)
+
+    st.markdown(
+        f"##### Training accuracy of the model is {train_accuracy}%")
+
+    st.markdown(f"##### Testing accuracy of the model is {test_accuracy}%")
+
+    st.markdown("---")
+
+    st.markdown("#### Predict Subscription Outcome")
+
+    X_pred = {}
+
+    for feature in features:
+        if feature == "age":
+            age = st.number_input(
+                "Enter age:", min_value=18, max_value=100, value=35, step=1, format="%d")
+            X_pred["age"] = [age]
+        if feature == "job":
+            options = ["admin.", "blue-collar", "technician", "services", "management",
+                       "retired", "self-employed", "entrepreneur", "housemaid", "student"]
+            job = st.selectbox("Select job:", options)
+            X_pred["job"] = [job]
+        if feature == "marital":
+            options = ["married", "single", "divorced"]
+            marital = st.selectbox("Select marital:", options)
+            X_pred["marital"] = [marital]
+        if feature == "education":
+            options = ["unknown", "primary", "secondary", "tertiary"]
+            education = st.selectbox("Select education:", options)
+            X_pred["education"] = [education]
+        if feature == "default":
+            options = ["no", "yes"]
+            default = st.selectbox("Select default:", options)
+            X_pred["default"] = [default]
+        if feature == "balance":
+            balance = st.number_input(
+                "Enter balance:", value=2500, step=1, format="%d")
+            X_pred["balance"] = [balance]
+        if feature == "housing":
+            options = ["no", "yes"]
+            housing = st.selectbox("Select housing:", options)
+            X_pred["housing"] = [housing]
+        if feature == "loan":
+            options = ["no", "yes"]
+            loan = st.selectbox("Select loan:", options)
+            X_pred["loan"] = [loan]
+        if feature == "contact":
+            options = ["unknown", "cellular", "telephone"]
+            contact = st.selectbox(
+                "Enter contact:", options)
+            X_pred["contact"] = [contact]
+        if feature == "day":
+            day = st.number_input(
+                "Enter day:", min_value=1, max_value=31, value=15, step=1, format="%d")
+            X_pred["day"] = [day]
+        if feature == "month":
+            options = ["jan", "feb", "mar", "apr", "may", "jun",
+                       "jul", "aug", "sep", "oct", "nov", "dec"]
+            month = st.selectbox("Select month:", options)
+            X_pred["month"] = [month]
+        if feature == "duration":
+            duration = st.number_input(
+                "Enter duration:", min_value=0, max_value=5000, value=100, step=1, format="%d")
+            X_pred["duration"] = [duration]
+        if feature == "campaign":
+            campaign = st.number_input(
+                "Enter campaign:", min_value=0, max_value=250, value=10, step=1, format="%d")
+            X_pred["campaign"] = [campaign]
+        if feature == "pdays":
+            pdays = st.number_input(
+                "Enter pdays:", min_value=0, max_value=1000, value=100, step=1, format="%d")
+            X_pred["pdays"] = [pdays]
+        if feature == "previous":
+            previous = st.number_input(
+                "Enter previous:", min_value=0, max_value=250, value=10, step=1, format="%d")
+            X_pred["previous"] = [previous]
+        if feature == "poutcome":
+            options = ["success", "failure", "unknown", "other"]
+            poutcome = st.selectbox("Select poutcome:", options)
+            X_pred["poutcome"] = [poutcome]
+
+    predict_subscription_outcome = st.button(
+        "Predict Subscription Outcome", type="primary", key="predict_subscription_outcome")
+
+    if predict_subscription_outcome:
+        X_pred = pd.DataFrame(X_pred)
+
+        for col in X_pred.columns:
+            X_pred[col] = label_encoders[col].transform(X_pred[col])
+
+        y_pred = classifier.predict(X_pred)
+
+        if y_pred == "yes":
+            st.markdown("#### Subscription Outcome: Yes")
+        else:
+            st.markdown("#### Subscription Outcome: No")
 
 with tab5:
 
