@@ -624,7 +624,7 @@ with tab3:
                         not correlated with each other except previous and pdays where the correlation \
                         between these two features is 0.45.")
             st.markdown(
-                "⭐ Optimal number of contants for a successful subscribers is less than 10.")
+                "⭐ Optimal number of contacts for a successful potential subscriber is less than 10.")
 
         hiplot_analysis_2 = st.checkbox(
             "**Hiplot Visualisation**", key="hiplot_analysis_2")
