@@ -618,7 +618,8 @@ with tab3:
             st.markdown("A correlation heat map is a graphical representation of a correlation \
                         matrix that displays the pairwise correlation coefficients between all \
                         the numeric variables. Here, we don't see any strong correlation between \
-                        any features. This is because all the numeric features are independent of each other.")
+                        most of the features and most of the correlation values are close to zero. \
+                        This is because most of the numeric features are independent of each other.")
 
             st.markdown("---")
 
