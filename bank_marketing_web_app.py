@@ -560,6 +560,13 @@ with tab3:
                 st.altair_chart(chart, theme="streamlit",
                                 use_container_width=True)
 
+            st.markdown("A 2d scatter plot is a type of data visualisation where \
+                        we plot points corresponding to two variables on a \
+                        two-dimensional coordinate system. Here, user is given an option \
+                        to visualise 2d scatter plots between any two variables and points are \
+                        colored either as red or green based on the outcome. Through these plots, \
+                        user can understand the relationship between two features of the data.")
+
             st.markdown("---")
 
             st.markdown("##### 3D Scatter Plot")
@@ -610,9 +617,8 @@ with tab3:
 
             st.markdown("A correlation heat map is a graphical representation of a correlation \
                         matrix that displays the pairwise correlation coefficients between all \
-                        the numeric variables. Here, we only see correlation matrix for only \
-                        two variables (age and balance) because there are only two numeric \
-                        features out of all eight features.")
+                        the numeric variables. Here, we don't see any strong correlation between \
+                        any features. This is because all the numeric features are independent of each other.")
 
             st.markdown("---")
 
